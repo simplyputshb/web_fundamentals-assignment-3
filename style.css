@@ -1,0 +1,1721 @@
+/*-- -------------------------- -->
+<---      Global Variables      -->
+<--- -------------------------- -*/
+
+:root {
+    /* Takumi colours */
+    --primary: #7a1420;          /* burgundy. buttons and anything you click */
+    --primaryLight: #a03a44;     /* same, lifted a bit, for hovers */
+    --secondary: #c9a227;        /* gold. used sparingly or it looks cheap */
+    --secondaryLight: #e0c56a;
+    --headerColor: #1f1b18;      /* headings. not quite black, slightly warm */
+    --bodyTextColor: #4a443f;    /* body text */
+    --bodyTextColorWhite: #f7f2e8;
+    --cream: #faf6ee;            /* the page */
+    --creamDark: #efe7d8;        /* a shade down, for alternating bands */
+    --charcoal: #191412;         /* dark sections and the footer */
+
+    /* 13px - 16px */
+    --topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
+    /* 31px - 49px */
+    --headerFontSize: clamp(1.9375rem, 3.9vw, 3.0625rem);
+    --bodyFontSize: 1rem;
+    /* 60px - 100px top and bottom */
+    --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+
+    /* Cormorant for headings, Jost for everything else */
+    --headingFont: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --bodyFont: "Jost", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--bodyFont);
+    background-color: var(--cream);
+    color: var(--bodyTextColor);
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--headingFont);
+    color: var(--headerColor);
+}
+
+.cs-topper {
+    font-size: var(--topperFontSize);
+    line-height: 1.2em;
+    text-transform: uppercase;
+    text-align: inherit;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.cs-title {
+    font-size: var(--headerFontSize);
+    font-weight: 600;
+    line-height: 1.2em;
+    text-align: inherit;
+    max-width: 43.75rem;
+    margin: 0 0 1rem 0;
+    color: var(--headerColor);
+    position: relative;
+}
+
+.cs-text {
+    font-size: var(--bodyFontSize);
+    line-height: 1.6em;
+    text-align: inherit;
+    width: 100%;
+    max-width: 40.625rem;
+    margin: 0;
+    color: var(--bodyTextColor);
+}
+
+/* focus ring for keyboard users. try tabbing through the page without it -
+   you have no idea where you are */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+
+
+/*-- -------------------------- -->
+<---     Mobile Navigation      -->
+<--- -------------------------- -*/
+/* Mobile - 1023px */
+@media only screen and (max-width: 1023.5px) {
+  body.cs-open {
+    overflow: hidden;
+  }
+  body.scroll #cs-navigation {
+    /* 53px, exactly the height of the burgundy bar, so it slides out of view */
+    transform: translateY(-3.3125rem);
+  }
+  #cs-navigation {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--cream);
+    box-shadow: rgba(31, 27, 24, 0.12) 0px 8px 24px;
+    position: fixed;
+    z-index: 10000;
+    transition: transform 0.3s;
+  }
+  #cs-navigation:before {
+    content: "";
+    width: 100%;
+    height: 0vh;
+    background: rgba(25, 20, 18, 0.7);
+    opacity: 0;
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: -1100;
+    transition: height 0.5s, opacity 0.5s;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  #cs-navigation.cs-active:before {
+    height: 150vh;
+    opacity: 1;
+  }
+  #cs-navigation.cs-active .cs-ul-wrapper {
+    opacity: 1;
+    transform: scaleY(1);
+    transition-delay: 0.15s;
+  }
+  #cs-navigation.cs-active .cs-li {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #cs-navigation .cs-top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #cs-navigation .cs-top-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem 1.5rem;
+    /* burgundy, not the stitch's grey. this strip should feel like the brand */
+    background-color: var(--primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  #cs-navigation .cs-top-contact {
+    width: auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 16px - 24px */
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  #cs-navigation .cs-top-link {
+    font-size: 0.875rem;
+    line-height: 1.5em;
+    text-decoration: none;
+    margin: 0;
+    /* cream on burgundy. checked it, comes out around 8:1 */
+    color: var(--bodyTextColorWhite);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+  #cs-navigation .cs-top-link:nth-of-type(2) {
+    display: none;
+  }
+  #cs-navigation .cs-link-icon {
+    width: 1rem;
+    height: auto;
+    display: block;
+  }
+  #cs-navigation .cs-top-social {
+    opacity: 1;
+    display: flex;
+    visibility: visible;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s, visibility 0.3s, height 0.3s;
+  }
+  #cs-navigation .cs-social-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  #cs-navigation .cs-social-icon {
+    width: 1.25rem;
+    height: auto;
+    display: block;
+  }
+  #cs-navigation .cs-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+  }
+  #cs-navigation .cs-logo {
+    /* our logo is tall and narrow, not a wide wordmark like the stitch
+       assumed, so it needs more room than 44px */
+    width: auto;
+    height: 3.5rem;
+    margin: 0 auto 0 0;
+    box-sizing: border-box;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 1;
+    z-index: 10;
+  }
+  #cs-navigation .cs-logo img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+  #cs-navigation .cs-nav {
+    order: 2;
+  }
+  #cs-navigation .cs-toggle {
+    width: 2.875rem;
+    height: 2.875rem;
+    margin: 0 0 0 auto;
+    background-color: var(--primary);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s;
+  }
+  #cs-navigation .cs-toggle.cs-active {
+    transform: rotate(180deg);
+  }
+  #cs-navigation .cs-active .cs-line1 {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(225deg);
+  }
+  #cs-navigation .cs-active .cs-line2 {
+    top: 50%;
+    transform: translate(-50%, -50%) translateY(0) rotate(-225deg);
+    transform-origin: center;
+  }
+  #cs-navigation .cs-active .cs-line3 {
+    opacity: 0;
+    bottom: 100%;
+  }
+  #cs-navigation .cs-box {
+    /* 24px - 28px */
+    width: clamp(1.5rem, 2vw, 1.75rem);
+    height: 0.75rem;
+    position: relative;
+  }
+  #cs-navigation .cs-line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--bodyTextColorWhite);
+    border-radius: 2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #cs-navigation .cs-line1 {
+    top: 0;
+    transition: transform 0.5s, top 0.3s, left 0.3s;
+    animation-duration: 0.7s;
+    animation-timing-function: ease;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    transform-origin: center;
+  }
+  #cs-navigation .cs-line2 {
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: top 0.3s, left 0.3s, transform 0.5s;
+    animation-duration: 0.7s;
+    animation-timing-function: ease;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+  }
+  #cs-navigation .cs-line3 {
+    bottom: 0;
+    transition: bottom 0.3s, opacity 0.3s;
+  }
+  #cs-navigation .cs-button-solid {
+    display: none;
+  }
+}
+/* Tablet - 768px */
+@media only screen and (min-width: 768px) {
+  #cs-navigation .cs-top-link:nth-of-type(2) {
+    display: flex;
+  }
+}
+/* Mobile menu list - 1023px */
+@media only screen and (max-width: 1023.5px) {
+  #cs-navigation .cs-ul-wrapper {
+    width: 100%;
+    height: auto;
+    padding-bottom: 3rem;
+    background-color: var(--cream);
+    overflow: hidden;
+    box-shadow: inset rgba(31, 27, 24, 0.2) 0px 8px 24px;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: -1;
+    transform: scaleY(0);
+    transition: transform 0.4s, opacity 0.3s;
+    transform-origin: top;
+  }
+  #cs-navigation .cs-ul {
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    margin: 0;
+    padding: 3rem 0 0 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  #cs-navigation .cs-li {
+    text-align: center;
+    list-style: none;
+    width: 100%;
+    margin-right: 0;
+    opacity: 0;
+    transform: translateY(-4.375rem);
+    transition: transform 0.6s, opacity 0.9s;
+  }
+  #cs-navigation .cs-li:nth-of-type(1) { transition-delay: 0.05s; }
+  #cs-navigation .cs-li:nth-of-type(2) { transition-delay: 0.1s; }
+  #cs-navigation .cs-li:nth-of-type(3) { transition-delay: 0.15s; }
+  #cs-navigation .cs-li:nth-of-type(4) { transition-delay: 0.2s; }
+  #cs-navigation .cs-li:nth-of-type(5) { transition-delay: 0.25s; }
+  #cs-navigation .cs-li-link {
+    /* 16px - 24px */
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-family: var(--headingFont);
+    line-height: 1.2em;
+    text-decoration: none;
+    margin: 0;
+    padding: 0.25rem;
+    color: var(--headerColor);
+    display: inline-block;
+    position: relative;
+  }
+  #cs-navigation .cs-li-link:before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    opacity: 1;
+    display: none;
+    position: absolute;
+    bottom: -0.125rem;
+    left: 0;
+  }
+  #cs-navigation .cs-li-link.cs-active {
+    color: var(--primary);
+  }
+  #cs-navigation .cs-li-link.cs-active:before {
+    display: block;
+  }
+  #cs-navigation .cs-li-link:hover {
+    color: var(--primary);
+  }
+}
+
+/*-- -------------------------- -->
+<---     Desktop Navigation     -->
+<--- -------------------------- -*/
+/* Small Desktop - 1024px */
+@media only screen and (min-width: 1024px) {
+  body.scroll #cs-navigation {
+    /* same 53px as above */
+    transform: translateY(-3.3125rem);
+  }
+  #cs-navigation {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    background-color: var(--cream);
+    box-shadow: rgba(31, 27, 24, 0.12) 0px 8px 24px;
+    position: fixed;
+    z-index: 10000;
+    transition: transform 0.3s;
+  }
+  #cs-navigation .cs-top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #cs-navigation .cs-top-container {
+    width: 100%;
+    max-width: 80rem;
+    box-sizing: border-box;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3.125rem;
+    position: relative;
+    z-index: 1;
+  }
+  #cs-navigation .cs-top-container:before {
+    content: "";
+    width: 100vw;
+    height: 100%;
+    /* burgundy, not the stitch's grey. this strip should feel like the brand */
+    background: var(--primary);
+    opacity: 1;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    transform: translateX(-50%);
+  }
+  #cs-navigation .cs-top-contact {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  #cs-navigation .cs-top-link {
+    font-size: 0.875rem;
+    line-height: 1.5em;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    margin: 0;
+    /* cream on burgundy. checked it, comes out around 8:1 */
+    color: var(--bodyTextColorWhite);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+  #cs-navigation .cs-top-link:hover {
+    text-decoration: underline;
+  }
+  #cs-navigation .cs-link-icon {
+    width: 1rem;
+    height: auto;
+    display: block;
+  }
+  #cs-navigation .cs-top-social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  #cs-navigation .cs-social-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s;
+  }
+  #cs-navigation .cs-social-link:hover {
+    transform: scale(1.1);
+  }
+  #cs-navigation .cs-social-icon {
+    width: 1.25rem;
+    height: auto;
+    display: block;
+  }
+  #cs-navigation .cs-container {
+    width: 100%;
+    max-width: 80rem;
+    margin: auto;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+  }
+  #cs-navigation .cs-toggle {
+    display: none;
+  }
+  #cs-navigation .cs-logo {
+    /* 64-76px. sized to fit the logo rather than squashing it */
+    height: clamp(4rem, 6vw, 4.75rem);
+    margin: 0 auto 0 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  #cs-navigation .cs-logo img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+  #cs-navigation .cs-ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+  }
+  #cs-navigation .cs-li {
+    list-style: none;
+    /* bit more room now the logo has grown */
+    padding: 2.5rem 0;
+    flex: none;
+  }
+  #cs-navigation .cs-li-link {
+    /* 14px - 16px */
+    font-size: clamp(0.875rem, 1.3vw, 1rem);
+    /* spaced caps. how most restaurant sites set their nav */
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.5em;
+    text-decoration: none;
+    margin: 0;
+    color: var(--headerColor);
+    display: block;
+    position: relative;
+    transition: color 0.3s;
+  }
+  #cs-navigation .cs-li-link:hover {
+    color: var(--primary);
+  }
+  #cs-navigation .cs-li-link.cs-active {
+    font-weight: 700;
+    color: var(--primary);
+  }
+  #cs-navigation .cs-button-solid {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    /* 46px - 56px */
+    line-height: clamp(2.875em, 5.5vw, 3.5em);
+    text-align: center;
+    text-decoration: none;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0 2rem;
+    background-color: var(--primary);
+    overflow: hidden;
+    color: var(--bodyTextColorWhite);
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    border-radius: 4px;
+    transition: color 0.3s;
+  }
+  #cs-navigation .cs-button-solid:before {
+    content: "";
+    width: 0%;
+    height: 100%;
+    /* charcoal not black. pure black looked harsh against the cream */
+    background: var(--charcoal);
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 0.3s;
+  }
+  #cs-navigation .cs-button-solid:hover:before {
+    width: 100%;
+  }
+  #cs-navigation .cs-nav-button {
+    line-height: 2.875rem;
+    margin-left: 1.5rem;
+  }
+}
+
+
+/*-- -------------------------- -->
+<---           Hero             -->
+<---   CodeStitch #1426         -->
+<--- -------------------------- -*/
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+  #hero-1426 {
+    /* left aligned. centred felt like a poster, this reads like a page */
+    text-align: left;
+    /* 200-300px. the nav is fixed, so the top needs clearing */
+    padding: clamp(12.5rem, 25.95vw, 18.75rem) 1rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  #hero-1426 .cs-background {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -2;
+  }
+  #hero-1426 .cs-background:before {
+    /* the stitch used a flat 48% black. that dulled the whole photo and
+       the text still was not crisp. this is dark where the words are and
+       nearly clear on the right, so you can still see the plate */
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      100deg,
+      rgba(25, 20, 18, 0.9) 0%,
+      rgba(25, 20, 18, 0.72) 45%,
+      rgba(25, 20, 18, 0.4) 100%
+    );
+    opacity: 1;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  #hero-1426 .cs-background img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  #hero-1426 .cs-container {
+    width: 100%;
+    max-width: 80rem;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3rem;
+  }
+  #hero-1426 .cs-content {
+    width: 100%;
+    max-width: 39.375rem;
+  }
+  #hero-1426 .cs-topper {
+    /* 13px - 16px */
+    font-size: clamp(0.8125rem, 1.5vw, 1rem);
+    line-height: 1.2em;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-align: left;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-top: 1.25rem;
+    color: var(--secondary);
+    display: inline-block;
+    position: relative;
+  }
+  #hero-1426 .cs-topper:before {
+    /* little gold line above the address. only ornament on the whole page */
+    content: "";
+    width: 3rem;
+    height: 1px;
+    background: var(--secondary);
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  #hero-1426 .cs-title {
+    /* 39-76px. bigger than the stitch. this line is the whole point */
+    font-size: clamp(2.4375rem, 7vw, 4.75rem);
+    font-family: var(--headingFont);
+    /* cormorant goes clumsy at 700. 400 is where it looks right */
+    font-weight: 400;
+    line-height: 1.05em;
+    letter-spacing: -0.01em;
+    text-align: left;
+    max-width: 51.8125rem;
+    margin: 0 0 1.5rem 0;
+    color: var(--bodyTextColorWhite);
+    position: relative;
+  }
+  #hero-1426 .cs-text {
+    /* 16px - 20px */
+    font-size: clamp(1rem, 1.95vw, 1.25rem);
+    font-weight: 300;
+    line-height: 1.7em;
+    text-align: left;
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 0 2.5rem 0;
+    color: var(--bodyTextColorWhite);
+  }
+  #hero-1426 .cs-button-group {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  #hero-1426 .cs-button-solid {
+    font-size: 1rem;
+    /* 46px - 56px */
+    line-height: clamp(2.875rem, 5.5vw, 3.5rem);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin: 0;
+    color: var(--bodyTextColorWhite);
+    min-width: 12.5rem;
+    padding: 0 1.5rem;
+    background-color: var(--primary);
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  #hero-1426 .cs-button-solid:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background: var(--charcoal);
+    opacity: 1;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  #hero-1426 .cs-button-solid:hover:before {
+    width: 100%;
+  }
+  #hero-1426 .cs-button1 {
+    /* booking is what we actually want, so this one gets filled in */
+    background-color: var(--primary);
+  }
+  #hero-1426 .cs-button2 {
+    /* outline. two solid buttons next to each other just made you pause
+       and pick, which is the opposite of helpful */
+    background-color: transparent;
+    border: 1px solid rgba(247, 242, 232, 0.55);
+  }
+  #hero-1426 .cs-button2:hover {
+    border-color: var(--charcoal);
+  }
+}
+
+
+/*-- -------------------------- -->
+<---      Logo lockup           -->
+<---  Emblem image + live text  -->
+<--- -------------------------- -*/
+/* Mobile */
+@media only screen and (min-width: 0rem) {
+  #cs-navigation .cs-logo {
+    /* mark left, name right */
+    width: auto;
+    height: auto;
+    gap: 0.75rem;
+    align-items: center;
+    /* there is text in the link now, so the default underline has to go */
+    text-decoration: none;
+  }
+  /* this selector has to match the stitch's ".cs-logo img" for weight.
+     a plain .cs-logo-mark loses, and the logo blows out of the bar */
+  #cs-navigation .cs-logo img.cs-logo-mark {
+    width: auto;
+    height: 2.5rem;
+    display: block;
+    object-fit: contain;
+  }
+  #cs-navigation .cs-logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.125rem;
+  }
+  #cs-navigation .cs-logo-name {
+    font-family: var(--bodyFont);
+    /* 20px - 26px */
+    font-size: clamp(1.25rem, 3.2vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+  #cs-navigation .cs-logo-tagline {
+    font-family: var(--bodyFont);
+    /* 8px - 10px */
+    font-size: clamp(0.5rem, 1.2vw, 0.625rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--bodyTextColor);
+  }
+}
+/* Desktop - 1024px */
+@media only screen and (min-width: 1024px) {
+  #cs-navigation .cs-logo {
+    height: auto;
+    gap: 0.875rem;
+    align-items: center;
+    text-decoration: none;
+  }
+  #cs-navigation .cs-logo img.cs-logo-mark {
+    /* 44px - 52px */
+    height: clamp(2.75rem, 3.4vw, 3.25rem);
+  }
+  #cs-navigation .cs-li {
+    /* pulled back in now the logo sits sideways instead of stacked */
+    padding: 1.75rem 0;
+  }
+}
+
+
+/*-- -------------------------- -->
+<---      The Art of Takumi     -->
+<---     CodeStitch #218        -->
+<--- -------------------------- -*/
+/* Mobile */
+@media only screen and (min-width: 0rem) {
+  #services-218 {
+    padding: var(--sectionPadding);
+    /* a shade deeper than the page so the section separates */
+    background-color: var(--creamDark);
+  }
+  #services-218 .cs-container {
+    width: 100%;
+    /* goes to 1280px at tablet */
+    max-width: 34.375rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 48px - 64px */
+    gap: clamp(3rem, 6vw, 4rem);
+  }
+  #services-218 .cs-content {
+    /* header sits centred */
+    text-align: center;
+    width: 100%;
+    max-width: 38rem;
+
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+  }
+  #services-218 .cs-topper {
+    /* gold and airy. the stitch's bold burgundy shouted too much */
+    color: var(--secondary);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.75rem;
+  }
+  #services-218 .cs-title {
+    font-family: var(--headingFont);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  #services-218 .cs-text {
+    font-weight: 300;
+    line-height: 1.7em;
+    margin-bottom: 0;
+  }
+  #services-218 .cs-card-group {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* 40px - 56px */
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  #services-218 .cs-item {
+    list-style: none;
+    width: 100%;
+    margin-right: 0;
+    /* open column, so it barely needs padding */
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    /* no box around these. cards right after that dark hero was too much
+       weight on the page, so they sit straight on the cream */
+    text-align: center;
+    position: relative;
+  }
+  /* dropped the offset orange rectangle that sat behind each card */
+  #services-218 .cs-kanji {
+    /* actual characters, not icon images. stay sharp at any zoom and a
+       screen reader can read them out */
+    /* 44px - 60px */
+    font-size: clamp(2.75rem, 6vw, 3.75rem);
+    line-height: 1;
+    font-weight: 400;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  #services-218 .cs-h3 {
+    /* 20px - 25px */
+    font-size: clamp(1.25rem, 1.5vw, 1.5625rem);
+    font-family: var(--headingFont);
+    line-height: 1.2em;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.75rem 0;
+    color: var(--headerColor);
+    font-weight: 500;
+  }
+  #services-218 .cs-item-text {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7em;
+    max-width: 20rem;
+    margin: 0 auto;
+    color: var(--bodyTextColor);
+  }
+}
+/* Tablet */
+@media only screen and (min-width: 48rem) {
+  #services-218 .cs-container {
+    max-width: 80rem;
+    position: relative;
+  }
+  #services-218 .cs-content {
+    /* full width now that watermark logo is gone */
+    width: 100%;
+  }
+  #services-218 .cs-card-group {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    /* 32px - 64px */
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  #services-218 .cs-item {
+    grid-column: span 4;
+    grid-row: span 1;
+    margin: 0;
+    align-self: stretch;
+  }
+  #services-218 .cs-item:not(:last-of-type):after {
+    /* thin line between columns rather than a box around each */
+    content: "";
+    width: 1px;
+    height: 60%;
+    background: rgba(122, 20, 32, 0.18);
+    position: absolute;
+    top: 20%;
+    right: calc(clamp(2rem, 4vw, 4rem) / -2);
+  }
+}
+
+
+/*-- -------------------------- -->
+<---       Signature Dishes     -->
+<---     CodeStitch #1628       -->
+<--- -------------------------- -*/
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+  #services-1628 {
+    padding: var(--sectionPadding);
+    background-color: var(--cream);
+  }
+  #services-1628 .cs-container {
+    width: 100%;
+    /* goes to 1280px at tablet */
+    max-width: 34.375rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 48px - 64px */
+    gap: clamp(3rem, 6vw, 4rem);
+  }
+  #services-1628 .cs-content {
+    /* centred, same as the section above */
+    text-align: center;
+    width: 100%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #services-1628 .cs-topper {
+    color: var(--secondary);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.75rem;
+  }
+  #services-1628 .cs-title {
+    font-family: var(--headingFont);
+    font-weight: 400;
+    max-width: 20ch;
+    margin-bottom: 1.25rem;
+  }
+  #services-1628 .cs-text {
+    font-weight: 300;
+    line-height: 1.7em;
+    max-width: 36rem;
+    position: relative;
+    z-index: 1;
+  }
+  /* the stitch had a rule here that turned into a vertical divider for
+     its two-column header. both went when I centred it */
+  #services-1628 .cs-card-group {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    /* 20px - 32px */
+    column-gap: clamp(1.25rem, 2.5vw, 2rem);
+    /* 36px - 56px */
+    row-gap: clamp(2.25rem, 4vw, 3.5rem);
+  }
+  #services-1628 .cs-item {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    grid-column: span 12;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* pulled out the hover zoom and the link wrapper. these cards do not go
+     anywhere, and a photo that lurches when you mouse over it does not
+     help anyone pick dinner */
+  #services-1628 .cs-picture {
+    width: 100%;
+    height: 15rem;
+    margin-bottom: 1.25rem;
+    background-color: var(--charcoal);
+    overflow: hidden;
+    display: block;
+    position: relative;
+    border-radius: 4px;
+  }
+  #services-1628 .cs-picture img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+  }
+  #services-1628 .cs-category {
+    /* tells you food from drinks without needing three headed sections */
+    font-size: 0.6875rem;
+    line-height: 1.2em;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+    display: block;
+  }
+  #services-1628 .cs-item-head {
+    /* name left, price right, on the same line */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(122, 20, 32, 0.15);
+  }
+  #services-1628 .cs-h3 {
+    /* 20px - 23px */
+    font-size: clamp(1.25rem, 1.6vw, 1.4375rem);
+    font-family: var(--headingFont);
+    line-height: 1.2em;
+    font-weight: 500;
+    text-align: left;
+    margin: 0;
+    color: var(--headerColor);
+  }
+  #services-1628 .cs-price {
+    font-size: 1rem;
+    line-height: 1.2em;
+    font-weight: 500;
+    white-space: nowrap;
+    margin: 0;
+    color: var(--primary);
+  }
+  #services-1628 .cs-item-text {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.6em;
+    text-align: left;
+    margin: 0;
+    color: var(--bodyTextColor);
+  }
+  /* six "Get Started" links and six chevrons came out. one button under
+     the grid does the same job with less noise */
+  #services-1628 .cs-button-solid {
+    font-size: 1rem;
+    line-height: 3.25rem;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin: 0;
+    box-sizing: border-box;
+    min-width: 13rem;
+    padding: 0 2rem;
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: color 0.3s;
+  }
+  #services-1628 .cs-button-solid:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 0.3s;
+  }
+  #services-1628 .cs-button-solid:hover {
+    color: var(--bodyTextColorWhite);
+  }
+  #services-1628 .cs-button-solid:hover:before {
+    width: 100%;
+  }
+}
+/* Tablet - 768px */
+@media only screen and (min-width: 48rem) {
+  #services-1628 .cs-container {
+    max-width: 80rem;
+  }
+  #services-1628 .cs-item {
+    grid-column: span 6;
+  }
+  #services-1628 .cs-picture {
+    /* shorter than the stitch's 420px so both rows land on screen at once */
+    height: clamp(15rem, 24vw, 20rem);
+  }
+}
+/* Large Desktop - 1300px */
+@media only screen and (min-width: 81.25rem) {
+  #services-1628 .cs-item {
+    /* three across. four was cramped once prices went in */
+    grid-column: span 4;
+  }
+}
+
+
+
+/*-- -------------------------- -->
+<---      The Takumi Circle      -->
+<---     CodeStitch #1718        -->
+<--- -------------------------- -*/
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+  #subscribe-1718 {
+
+    background-color: var(--charcoal);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+  #subscribe-1718 .cs-container {
+    width: 100%;
+    max-width: 34.375rem;
+    margin: auto;
+    /* less padding underneath. the footer is the same dark colour, so a
+       full section's worth on each side left a huge empty gap */
+    padding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem clamp(2.5rem, 5vw, 3.5rem);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(3rem, 6vw, 4rem);
+  }
+  #subscribe-1718 .cs-content {
+    /* centred, like everything else */
+    text-align: center;
+    width: 100%;
+    max-width: 44rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  #subscribe-1718 .cs-topper {
+    color: var(--secondary);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.75rem;
+  }
+  #subscribe-1718 .cs-title {
+    font-family: var(--headingFont);
+    font-weight: 400;
+    max-width: 20ch;
+    margin-bottom: 1.25rem;
+    color: var(--bodyTextColorWhite);
+  }
+  #subscribe-1718 .cs-text {
+    font-weight: 300;
+    line-height: 1.7em;
+    max-width: 36rem;
+    margin-bottom: 2.75rem;
+    color: var(--bodyTextColorWhite);
+    opacity: 0.8;
+  }
+  /* the stitch's faint spiral watermark came out */
+  #subscribe-1718 .cs-form {
+    /* this was the stitch's newsletter box. same idea, different purpose */
+    width: 100%;
+    max-width: 34rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    text-align: left;
+  }
+  #subscribe-1718 .cs-form-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(247, 242, 232, 0.7);
+  }
+  #subscribe-1718 .cs-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  #subscribe-1718 .cs-input {
+    font-size: 1rem;
+    font-family: var(--bodyFont);
+    width: 100%;
+    height: clamp(2.875rem, 5.5vw, 3.5rem);
+    margin: 0;
+    padding: 0 1.25rem;
+    /* outlined. a solid white box was far too loud on the dark */
+    background-color: transparent;
+    border: 1px solid rgba(247, 242, 232, 0.4);
+    color: var(--bodyTextColorWhite);
+    box-sizing: border-box;
+    display: block;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+  #subscribe-1718 .cs-input::placeholder {
+    color: rgba(247, 242, 232, 0.45);
+  }
+  #subscribe-1718 .cs-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+  }
+  #subscribe-1718 .cs-input[aria-invalid="true"] {
+    /* border goes red too. colour alone is not enough, but two signals
+       beat one */
+    border-color: #e8836f;
+  }
+  #subscribe-1718 .cs-form-note {
+    font-size: 0.8125rem;
+    font-weight: 300;
+    line-height: 1.6em;
+    margin: 0.5rem 0 0 0;
+    color: rgba(247, 242, 232, 0.5);
+  }
+  #subscribe-1718 .cs-message {
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.5em;
+    margin: 0.25rem 0 0 0;
+    min-height: 1.25rem;
+    color: rgba(247, 242, 232, 0.8);
+  }
+  #subscribe-1718 .cs-message.cs-error {
+    color: #e8836f;
+  }
+  #subscribe-1718 .cs-message.cs-success {
+    color: var(--secondary);
+  }
+  #subscribe-1718 .cs-submit {
+    border: none;
+    cursor: pointer;
+    font-family: var(--bodyFont);
+  }
+  #subscribe-1718 .cs-button-solid {
+    font-size: 1rem;
+    /* 46px - 56px */
+    line-height: clamp(2.875rem, 5.5vw, 3.5rem);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin: 0;
+    color: var(--bodyTextColorWhite);
+    min-width: 11rem;
+    padding: 0 2rem;
+    background-color: var(--primary);
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  #subscribe-1718 .cs-button-solid:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background: var(--primaryLight);
+    opacity: 1;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 0.3s;
+  }
+  #subscribe-1718 .cs-button-solid:hover:before {
+    width: 100%;
+  }
+  #subscribe-1718 .cs-benefits {
+    /* always on show. people should know what they are joining before
+       they hand over an email address */
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 0 2.75rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(201, 162, 39, 0.35);
+    border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    /* 20px - 32px */
+    gap: clamp(1.25rem, 3vw, 2rem);
+    text-align: left;
+  }
+  #subscribe-1718 .cs-benefit {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.6em;
+    color: rgba(247, 242, 232, 0.75);
+  }
+  #subscribe-1718 .cs-benefit-name {
+    font-family: var(--headingFont);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3em;
+    margin-bottom: 0.25rem;
+    color: var(--bodyTextColorWhite);
+    display: block;
+  }
+}
+/* Tablet - 768px */
+@media only screen and (min-width: 48rem) {
+  #subscribe-1718 .cs-container {
+    max-width: 82rem;
+    align-items: center;
+  }
+  #subscribe-1718 .cs-form-row {
+    flex-direction: row;
+  }
+  #subscribe-1718 .cs-submit {
+    flex: none;
+  }
+  #subscribe-1718 .cs-benefits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/*-- -------------------------- -->
+<---           Footer            -->
+<---     CodeStitch #269         -->
+<--- -------------------------- -*/
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+  #cs-footer-269 {
+    /* same reason. these two run into each other */
+    padding: clamp(2.5rem, 5vw, 3.5rem) 1rem 0;
+    background-color: var(--charcoal);
+  }
+  #cs-footer-269 .cs-container {
+    width: 100%;
+    max-width: 80rem;
+    margin: auto;
+    /* thin line so you can tell where the Circle stops and the footer starts */
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid rgba(247, 242, 232, 0.12);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* 40px - 76px */
+    column-gap: clamp(2.5rem, calc(6%), 4.75rem);
+    row-gap: 2.5rem;
+  }
+  #cs-footer-269 .cs-logo-group {
+    width: 100%;
+    position: relative;
+  }
+  #cs-footer-269 .cs-logo {
+    /* same logo lockup as the header */
+    width: auto;
+    height: auto;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+  #cs-footer-269 .cs-logo-img {
+    width: auto;
+    height: 3rem;
+    display: block;
+    object-fit: contain;
+  }
+  #cs-footer-269 .cs-logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.125rem;
+  }
+  #cs-footer-269 .cs-logo-name {
+    font-family: var(--bodyFont);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    /* cream. the burgundy version on charcoal is basically unreadable */
+    color: var(--bodyTextColorWhite);
+  }
+  #cs-footer-269 .cs-logo-tagline {
+    font-family: var(--bodyFont);
+    font-size: 0.5625rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(247, 242, 232, 0.6);
+  }
+  #cs-footer-269 .cs-text {
+    /* 14px - 16px */
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 300;
+    line-height: 1.7em;
+    margin: 0;
+    max-width: 22rem;
+    color: rgba(247, 242, 232, 0.65);
+  }
+  #cs-footer-269 .cs-nav,
+  #cs-footer-269 .cs-contact {
+    padding: 0;
+    margin: 0;
+  }
+  #cs-footer-269 .cs-nav-li {
+    list-style: none;
+    /* opening hours, not links, so they read as plain text */
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.7em;
+    margin-bottom: 1rem;
+    color: rgba(247, 242, 232, 0.7);
+  }
+  #cs-footer-269 .cs-nav-li:last-of-type {
+    margin-bottom: 0;
+  }
+  #cs-footer-269 .cs-header {
+    font-size: 0.75rem;
+    line-height: 1.5em;
+
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    /* gold for the column headings */
+    color: var(--secondary);
+    position: relative;
+    display: block;
+  }
+  #cs-footer-269 .cs-service-name {
+    /* labels lunch, dinner and the bar inside the hours list */
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bodyTextColorWhite);
+    display: block;
+    margin-bottom: 0.125rem;
+  }
+  #cs-footer-269 .cs-address {
+    /* proper <address> element. it is literally the venue's address */
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.7em;
+    margin: 0;
+    color: rgba(247, 242, 232, 0.7);
+  }
+  #cs-footer-269 .cs-nav-link {
+    font-size: 0.875rem;
+    text-decoration: none;
+    line-height: 1.5em;
+    color: var(--bodyTextColorWhite);
+    position: relative;
+  }
+  #cs-footer-269 .cs-nav-link:before {
+    /* underline */
+    content: "";
+    width: 0%;
+    height: 1px;
+    background: currentColor;
+    opacity: 1;
+    position: absolute;
+    display: block;
+    bottom: -0.125rem;
+    left: 0;
+    transition: width 0.3s;
+  }
+  #cs-footer-269 .cs-nav-link:hover:before {
+    width: 100%;
+  }
+  #cs-footer-269 .cs-contact {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+  }
+  #cs-footer-269 .cs-contact-li {
+    list-style: none;
+    margin-bottom: 0.75rem;
+  }
+  #cs-footer-269 .cs-contact-link {
+    font-size: 0.875rem;
+    text-decoration: none;
+    line-height: 1.6em;
+    text-align: left;
+    color: rgba(247, 242, 232, 0.8);
+    display: inline-block;
+    transition: color 0.3s;
+  }
+  #cs-footer-269 .cs-contact-link:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+  }
+  #cs-footer-269 .cs-social-group {
+    margin-top: 1rem;
+  }
+  #cs-footer-269 .cs-social {
+    display: inline-flex;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+  #cs-footer-269 .cs-social-link {
+    width: 2.125rem;
+    height: 2.125rem;
+    /* outlined squares. the stitch's grey circles felt bolted on */
+    background-color: transparent;
+    border: 1px solid rgba(247, 242, 232, 0.3);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+  #cs-footer-269 .cs-social-link:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+
+  }
+  #cs-footer-269 .cs-social-img {
+    height: 0.9375rem;
+    width: auto;
+    display: block;
+  }
+  #cs-footer-269 .cs-bottom {
+    /* copyright strip along the bottom */
+    width: 100%;
+    max-width: 80rem;
+    margin: clamp(3rem, 6vw, 4rem) auto 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(247, 242, 232, 0.12);
+  }
+  #cs-footer-269 .cs-copyright {
+    font-size: 0.8125rem;
+    font-weight: 300;
+    text-align: center;
+    margin: 0;
+    color: rgba(247, 242, 232, 0.45);
+  }
+}
+/* Tablet - 768px */
+@media only screen and (min-width: 48rem) {
+  #cs-footer-269 .cs-container {
+    max-width: 80rem;
+    flex-wrap: nowrap;
+    row-gap: 0;
+  }
+  #cs-footer-269 .cs-logo-group {
+    width: auto;
+    margin-right: auto;
+  }
+  #cs-footer-269 .cs-text {
+    width: 80%;
+    max-width: 19.0625rem;
+    margin: 0;
+  }
+  #cs-footer-269 .cs-nav,
+  #cs-footer-269 .cs-contact {
+    /* 8px - 12px */
+    margin-top: clamp(0.5rem, 1.2vw, 0.75rem);
+  }
+}
+
+/* quick links row. not in the original stitch, I added this */
+@media only screen and (min-width: 0rem) {
+  #cs-footer-269 .cs-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  #cs-footer-269 .cs-quick-ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* 16px - 32px */
+    column-gap: clamp(1rem, 2.5vw, 2rem);
+    row-gap: 0.5rem;
+  }
+  #cs-footer-269 .cs-quick-link {
+    font-size: 0.8125rem;
+    line-height: 1.5em;
+    text-decoration: none;
+    color: rgba(247, 242, 232, 0.55);
+    position: relative;
+    transition: color 0.3s;
+  }
+  #cs-footer-269 .cs-quick-link:hover {
+    color: var(--secondary);
+  }
+}
+/* Tablet - 768px */
+@media only screen and (min-width: 48rem) {
+  #cs-footer-269 .cs-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #cs-footer-269 .cs-quick-ul {
+    justify-content: flex-end;
+  }
+}
+
+/* location map in the footer */
+@media only screen and (min-width: 0rem) {
+  #cs-footer-269 .cs-map {
+    width: 100%;
+    max-width: 18rem;
+    height: auto;
+    display: block;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    /* the map is light and the footer is dark, so it needs an edge or it
+       looks like a hole punched in the page */
+    border: 1px solid rgba(247, 242, 232, 0.2);
+  }
+  #cs-footer-269 .cs-map-credit {
+    font-size: 0.6875rem;
+    line-height: 1.4em;
+    color: rgba(247, 242, 232, 0.4);
+    display: block;
+  }
+}
