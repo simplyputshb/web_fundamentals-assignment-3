@@ -297,17 +297,30 @@
         return NAME_PATTERN.test(value);
     }
 
-    /* Wants an @ with something on both sides, so "@example.com" and
-       "someone@" both get rejected. Worth saying this only checks the
+    /* Wants a domain with an actual dot in it, so "aa@com" gets rejected
+       just as much as "someone@" does - a bare word isn't a domain, it's
+       missing the .com/.co.uk/etc part. Worth saying this only checks the
        shape of it. You cannot tell an address actually works without
        sending mail to it. */
     function isValidEmail(value) {
+        if (/\s/.test(value)) return false;           // no spaces anywhere
         const at = value.indexOf("@");
-        if (at === -1) return false;                 // no @ at all
+        if (at === -1) return false;                  // no @ at all
         if (at !== value.lastIndexOf("@")) return false; // more than one @
+
         const before = value.slice(0, at);
         const after  = value.slice(at + 1);
-        return before.length > 0 && after.length > 0;
+        if (before.length === 0 || after.length === 0) return false;
+
+        // the domain needs a dot that isn't the first or last character,
+        // e.g. "yahoo.com" or "yahoo.co.pk" - "com" alone doesn't count
+        const lastDot = after.lastIndexOf(".");
+        if (lastDot <= 0 || lastDot === after.length - 1) return false;
+
+        // and whatever comes after that final dot should look like a real
+        // TLD: letters only, at least two of them
+        const tld = after.slice(lastDot + 1);
+        return /^[A-Za-z]{2,}$/.test(tld);
     }
 
     /* Digits only, 6-15 of them. That range covers a normal local number
@@ -380,8 +393,8 @@
 
         if (!isValidEmail(emailValue)) {
             setMessage(
-                "That does not look like an email address. Please include an @, " +
-                "for example you@example.com.",
+                "That does not look like a complete email address. Please " +
+                "include the full domain, for example you@example.com.",
                 "error", email
             );
             email.focus();
