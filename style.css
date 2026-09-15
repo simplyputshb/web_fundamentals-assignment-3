@@ -8,6 +8,9 @@
     --primaryLight: #a03a44;     /* same, lifted a bit, for hovers */
     --secondary: #c9a227;        /* gold. used sparingly or it looks cheap */
     --secondaryLight: #e0c56a;
+    --secondaryDark: #6f5a16;    /* same gold, darkened for use on cream backgrounds. #c9a227 only clears
+                                     WCAG AA on the dark charcoal sections - on cream/creamDark it drops
+                                     to ~2:1, which is what Lighthouse was flagging */
     --headerColor: #1f1b18;      /* headings. not quite black, slightly warm */
     --bodyTextColor: #4a443f;    /* body text */
     --bodyTextColorWhite: #f7f2e8;
@@ -878,8 +881,10 @@ input:focus-visible {
     align-items: center;
   }
   #services-218 .cs-topper {
-    /* gold and airy. the stitch's bold burgundy shouted too much */
-    color: var(--secondary);
+    /* gold and airy. the stitch's bold burgundy shouted too much.
+       secondaryDark instead of secondary - same gold hue, but the plain
+       gold failed contrast against this section's cream background */
+    color: var(--secondaryDark);
     font-weight: 400;
     letter-spacing: 0.18em;
     margin-bottom: 0.75rem;
@@ -1014,7 +1019,8 @@ input:focus-visible {
     align-items: center;
   }
   #services-1628 .cs-topper {
-    color: var(--secondary);
+    /* secondaryDark, not secondary - see the note on #services-218 .cs-topper */
+    color: var(--secondaryDark);
     font-weight: 400;
     letter-spacing: 0.18em;
     margin-bottom: 0.75rem;
@@ -1083,7 +1089,8 @@ input:focus-visible {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
-    color: var(--secondary);
+    /* secondaryDark, not secondary - same reason as the toppers above */
+    color: var(--secondaryDark);
     display: block;
   }
   #services-1628 .cs-item-head {
@@ -1258,6 +1265,27 @@ input:focus-visible {
     gap: 0.5rem;
     text-align: left;
   }
+  /* wraps a label with its input. margin-bottom (not the .cs-form gap)
+     spaces the fields apart, so it doesn't stack with the message/note's
+     own margin-top below the last field */
+  #subscribe-1718 .cs-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  /* groups the name + phone fields so they can sit side by side at
+     tablet width - see the tablet breakpoint below */
+  #subscribe-1718 .cs-form-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  #subscribe-1718 .cs-form-pair .cs-form-field {
+    /* the pair wrapper already carries the margin-bottom */
+    margin-bottom: 0;
+  }
   #subscribe-1718 .cs-form-label {
     font-size: 0.75rem;
     font-weight: 400;
@@ -1402,6 +1430,14 @@ input:focus-visible {
   }
   #subscribe-1718 .cs-submit {
     flex: none;
+  }
+  #subscribe-1718 .cs-form-pair {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  #subscribe-1718 .cs-form-pair .cs-form-field {
+    flex: 1;
+    min-width: 0;
   }
   #subscribe-1718 .cs-benefits {
     grid-template-columns: repeat(2, 1fr);
@@ -1630,7 +1666,8 @@ input:focus-visible {
     font-weight: 300;
     text-align: center;
     margin: 0;
-    color: rgba(247, 242, 232, 0.45);
+    /* was 0.45 - sat just under 4.5:1 against the charcoal background */
+    color: rgba(247, 242, 232, 0.55);
   }
 }
 /* Tablet - 768px */
@@ -1715,7 +1752,8 @@ input:focus-visible {
   #cs-footer-269 .cs-map-credit {
     font-size: 0.6875rem;
     line-height: 1.4em;
-    color: rgba(247, 242, 232, 0.4);
+    /* was 0.4 - well under 4.5:1 against the charcoal background at this size */
+    color: rgba(247, 242, 232, 0.6);
     display: block;
   }
 }

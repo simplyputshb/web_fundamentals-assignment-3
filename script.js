@@ -260,25 +260,41 @@
 /* ============================================
    Takumi Circle
 
-   This part is mine. The signup form checks the email address before it
-   accepts it, and tells you what is wrong if it does not like it.
+   This part is mine. The signup form checks the name, phone number and
+   email address before it accepts them, and tells you what is wrong if
+   it does not like one of them.
    ============================================ */
 
 (() => {
     const form    = document.querySelector("#circle-form");
+    const name    = document.querySelector("#circle-name");
+    const phone   = document.querySelector("#circle-phone");
     const email   = document.querySelector("#circle-email");
     const message = document.querySelector("#circle-message");
 
     // bail out if the section is not on the page
-    if (!form || !email || !message) return;
+    if (!form || !name || !phone || !email || !message) return;
 
-    /* Drops a message under the field and marks the input good or bad.
-       A red border tells a sighted person something is wrong and tells a
-       screen reader user nothing, so aria-invalid does that job. */
-    function setMessage(text, type) {
+    const fields = [name, phone, email];
+
+    /* Drops a message under the form and marks the offending input, if
+       any, as invalid. A red border tells a sighted person something is
+       wrong and tells a screen reader user nothing, so aria-invalid does
+       that job. Everything else is marked valid again so an old error
+       does not linger on a field that is fine now. */
+    function setMessage(text, type, invalidField) {
         message.textContent = text;
         message.className = "cs-message" + (type ? " cs-" + type : "");
-        email.setAttribute("aria-invalid", type === "error" ? "true" : "false");
+        fields.forEach((field) => {
+            field.setAttribute("aria-invalid", field === invalidField ? "true" : "false");
+        });
+    }
+
+    /* Letters, spaces, hyphens and apostrophes only, so "Mary-Jane" and
+       "O'Brien" still work. No digits, no other symbols. */
+    const NAME_PATTERN = /^[A-Za-z\s'-]+$/;
+    function isValidName(value) {
+        return NAME_PATTERN.test(value);
     }
 
     /* Wants an @ with something on both sides, so "@example.com" and
@@ -294,22 +310,79 @@
         return before.length > 0 && after.length > 0;
     }
 
+    /* Digits only, 6-15 of them. That range covers a normal local number
+       up to a full international one, without accepting something that
+       is obviously not a phone number. */
+    function isValidPhone(value) {
+        return /^[0-9]{6,15}$/.test(value);
+    }
+
+    /* Strips out anything that should not be there as the person types,
+       rather than letting it in and complaining later. A number physically
+       cannot end up in the name field, and a letter cannot end up in the
+       phone field. */
+    function filterInput(field, allowedPattern) {
+        field.addEventListener("input", () => {
+            const cleaned = field.value.replace(allowedPattern, "");
+            if (cleaned !== field.value) field.value = cleaned;
+            if (message.classList.contains("cs-error")) setMessage("", null);
+        });
+    }
+
+    filterInput(name, /[^A-Za-z\s'-]/g);
+    filterInput(phone, /[^0-9]/g);
+
+    /* Clear the error as soon as they start fixing it. Leaving the
+       complaint up while someone retypes is just irritating. */
+    email.addEventListener("input", () => {
+        if (message.classList.contains("cs-error")) setMessage("", null);
+    });
+
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
-        const value = email.value.trim();
+        const nameValue  = name.value.trim();
+        const phoneValue = phone.value.trim();
+        const emailValue = email.value.trim();
 
-        if (value === "") {
-            setMessage("Please enter your email address to join.", "error");
+        if (nameValue === "") {
+            setMessage("Please enter your name to join.", "error", name);
+            name.focus();
+            return;
+        }
+
+        if (!isValidName(nameValue)) {
+            setMessage("Please enter your name using letters only.", "error", name);
+            name.focus();
+            return;
+        }
+
+        if (phoneValue === "") {
+            setMessage("Please enter your phone number to join.", "error", phone);
+            phone.focus();
+            return;
+        }
+
+        if (!isValidPhone(phoneValue)) {
+            setMessage(
+                "Please enter a valid phone number using numbers only.",
+                "error", phone
+            );
+            phone.focus();
+            return;
+        }
+
+        if (emailValue === "") {
+            setMessage("Please enter your email address to join.", "error", email);
             email.focus();
             return;
         }
 
-        if (!isValidEmail(value)) {
+        if (!isValidEmail(emailValue)) {
             setMessage(
                 "That does not look like an email address. Please include an @, " +
                 "for example you@example.com.",
-                "error"
+                "error", email
             );
             email.focus();
             return;
@@ -321,11 +394,5 @@
             "success"
         );
         form.reset();
-    });
-
-    /* Clear the error as soon as they start fixing it. Leaving the
-       complaint up while someone retypes is just irritating. */
-    email.addEventListener("input", () => {
-        if (message.classList.contains("cs-error")) setMessage("", null);
     });
 })();

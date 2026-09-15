@@ -275,15 +275,39 @@
                     <!-- novalidate stops Chrome showing its own popup, so the
                          message underneath is the only one people see -->
                     <form class="cs-form" id="circle-form" novalidate>
-                        <label class="cs-form-label" for="circle-email">
-                            Email address
-                        </label>
-                        <div class="cs-form-row">
-                            <input class="cs-input" type="email" id="circle-email"
-                                   name="circle-email" placeholder="you@example.com"
-                                   autocomplete="email"
-                                   aria-describedby="circle-message">
-                            <button class="cs-button-solid cs-submit" type="submit">Join Now</button>
+                        <div class="cs-form-pair">
+                            <div class="cs-form-field">
+                                <label class="cs-form-label" for="circle-name">
+                                    Full name
+                                </label>
+                                <input class="cs-input" type="text" id="circle-name"
+                                       name="circle-name" placeholder="Jane Doe"
+                                       autocomplete="name" inputmode="text"
+                                       pattern="[A-Za-z\s'-]+" maxlength="80"
+                                       aria-describedby="circle-message">
+                            </div>
+                            <div class="cs-form-field">
+                                <label class="cs-form-label" for="circle-phone">
+                                    Phone number
+                                </label>
+                                <input class="cs-input" type="tel" id="circle-phone"
+                                       name="circle-phone" placeholder="0412 345 678"
+                                       autocomplete="tel" inputmode="numeric"
+                                       pattern="[0-9]+" maxlength="15"
+                                       aria-describedby="circle-message">
+                            </div>
+                        </div>
+                        <div class="cs-form-field">
+                            <label class="cs-form-label" for="circle-email">
+                                Email address
+                            </label>
+                            <div class="cs-form-row">
+                                <input class="cs-input" type="email" id="circle-email"
+                                       name="circle-email" placeholder="you@example.com"
+                                       autocomplete="email"
+                                       aria-describedby="circle-message">
+                                <button class="cs-button-solid cs-submit" type="submit">Join Now</button>
+                            </div>
                         </div>
                         <p class="cs-message" id="circle-message" role="status"></p>
                         <p class="cs-form-note">
